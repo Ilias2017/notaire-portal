@@ -1,161 +1,237 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>بوابة الموثق</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Police Cairo -->
-  <link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
   <style>
     body {
       font-family: 'Cairo', sans-serif;
-      background-color: #f4f6f8;
-      margin: 0;
-      padding: 0;
+      background: linear-gradient(135deg, #f4f7f6, #e8f0ef);
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+      color: #2c3e50;
+      animation: fadeIn 1s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .container {
-      background-color: white;
-      padding: 30px;
+      background-color: #ffffff;
+      padding: 40px 30px;
       border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+      max-width: 640px;
+      width: 100%;
       text-align: center;
-      max-width: 500px;
-      width: 90%;
     }
 
-    h2 {
-      color: #1f2d3d;
+    h1 {
+      font-size: 2.2em;
       margin-bottom: 30px;
+      color: #34495e;
     }
 
-    .button-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 15px;
-    }
-
-    .btn {
-      padding: 20px;
-      font-size: 18px;
-      font-weight: bold;
-      border: none;
-      border-radius: 10px;
-      color: white;
-      cursor: pointer;
-      transition: transform 0.2s;
-    }
-
-    .btn:hover {
-      transform: scale(1.05);
-    }
-
-    .orange { background-color: #e67e22; }
-    .green { background-color: #27ae60; }
-    .yellow { background-color: #f39c12; }
-    .purple { background-color: #9b59b6; }
-
-    .logout {
-      margin-top: 25px;
-      background-color: #000000;
-      color: #ffffff;
-      font-family: 'Cairo', sans-serif;
-      padding: 10px 18px;
-      font-size: 14px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    .logout:hover {
-      background-color: #333333;
-    }
-
-    /* Auth form */
-    #loginForm {
+    /* Styles pour le formulaire de connexion */
+    .auth-form {
       display: flex;
       flex-direction: column;
       gap: 15px;
+      margin-top: 20px;
     }
 
-    input[type="email"], input[type="password"] {
-      padding: 12px;
-      font-size: 16px;
+    .auth-form input[type="email"],
+    .auth-form input[type="password"] {
+      padding: 12px 15px;
+      font-size: 1em;
       border: 1px solid #ccc;
       border-radius: 8px;
+      font-family: 'Cairo', sans-serif; /* Assurer la police Cairo */
     }
 
-    #app {
-      display: none;
+    .auth-form input[type="email"]:focus,
+    .auth-form input[type="password"]:focus {
+      outline: none;
+      border-color: #3498db;
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
     }
 
-    @media (max-width: 768px) {
+    .auth-button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      background-color: #3498db;
+      color: white;
+      font-size: 1.1em;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      font-family: 'Cairo', sans-serif; /* Assurer la police Cairo */
+    }
+
+    .auth-button:hover {
+      background-color: #2980b9;
+      transform: translateY(-1px);
+    }
+
+    /* Styles pour l'application principale (boutons) */
+    .button-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    @media (min-width: 600px) {
       .button-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 1fr;
       }
+    }
 
-      .btn {
-        font-size: 16px;
-        padding: 16px;
-      }
+    .action-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 16px 20px;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-size: 1.1em;
+      font-weight: bold;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+      font-family: 'Cairo', sans-serif; /* Assurer la police Cairo */
+    }
 
-      .logout {
-        width: 100%;
-        font-size: 13px;
-      }
+    .action-button:hover {
+      transform: translateY(-2px);
+    }
+
+    .action-button:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-vendeur { background-color: #2ecc71; }
+    .form-vendeur:hover { background-color: #27ae60; }
+
+    .form-acheteur { background-color: #e67e22; }
+    .form-acheteur:hover { background-color: #d35400; }
+
+    .depot-certificat { background-color: #9b59b6; }
+    .depot-certificat:hover { background-color: #8e44ad; }
+
+    .generer-acte { background-color: #f39c12; }
+    .generer-acte:hover { background-color: #e67e22; }
+
+    /* Styles pour le bouton de déconnexion */
+    .logout-button {
+      margin-top: 30px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      background-color: #e74c3c; /* Rouge discret pour déconnexion */
+      color: white;
+      font-size: 0.95em;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      font-family: 'Cairo', sans-serif; /* Assurer la police Cairo */
+      display: inline-flex; /* Pour centrer le texte et l'icône si ajoutée */
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logout-button:hover {
+      background-color: #c0392b;
+      transform: translateY(-1px);
+    }
+
+    /* Pour masquer/afficher les sections */
+    #app-content {
+      display: none; /* Masqué par défaut */
+    }
+
+    #login-screen {
+      display: block; /* Visible par défaut */
     }
   </style>
 </head>
 <body>
-  <!-- Auth Form -->
-  <div class="container" id="loginForm">
-    <h2>تسجيل الدخول</h2>
-    <input type="email" id="email" placeholder="البريد الإلكتروني">
-    <input type="password" id="password" placeholder="كلمة المرور">
-    <button class="btn green" onclick="login()">دخول</button>
+  <div class="container" id="login-screen">
+    <h1>تسجيل الدخول</h1>
+    <div class="auth-form">
+      <input type="email" id="email" placeholder="البريد الإلكتروني" value="demo@example.com">
+      <input type="password" id="password" placeholder="كلمة المرور" value="demo123">
+      <button class="auth-button" onclick="login()">دخول</button>
+    </div>
   </div>
 
-  <!-- Main App -->
-  <div class="container" id="app">
-    <h2>بوابة الموثق: إجراءات سريعة</h2>
+  <div class="container" id="app-content">
+    <h1>بوابة الموثق: إجراءات سريعة</h1>
     <div class="button-grid">
-      <button class="btn orange">نموذج المشتري</button>
-      <button class="btn green">نموذج البائع</button>
-      <button class="btn yellow">إنشاء نموذج العقد</button>
-      <button class="btn purple">إيداع شهادة الملكية</button>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSdAsN1xXgDPqFkS6AzEqTnNuqOI9EmojGrAHUf87SUkYX22UA/viewform?usp=header" target="_blank" class="action-button form-vendeur">
+        <i class="fas fa-user-tag"></i> نموذج البائع
+      </a>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSfdwV0Z8cR5HmckG0JsZEJpMeB0Kxg-B-Ea3FYK302MfQI7VQ/viewform?usp=header" target="_blank" class="action-button form-acheteur">
+        <i class="fas fa-shopping-bag"></i> نموذج المشتري
+      </a>
+      <a href="https://drive.google.com/drive/u/1/folders/1gEfNQH5Dvk69E2QmtLKW5WN3oRQY441S" target="_blank" class="action-button depot-certificat">
+        <i class="fas fa-scroll"></i> إيداع شهادة الملكية
+      </a>
+      <a href="https://n8n.srv903088.hstgr.cloud/form/e1b6de87-fe90-445d-984e-963bd6dbbc26" target="_blank" class="action-button generer-acte">
+        <i class="fas fa-file-signature"></i> إنشاء نموذج العقد
+      </a>
     </div>
-    <button class="logout" onclick="logout()">تسجيل الخروج</button>
+    <button class="logout-button" onclick="logout()">
+      <i class="fas fa-sign-out-alt"></i> تسجيل الخروج
+    </button>
   </div>
 
   <script>
+    // Identifiants de démo codés en dur
     const correctEmail = "demo@example.com";
     const correctPassword = "demo123";
 
+    const loginScreen = document.getElementById("login-screen");
+    const appContent = document.getElementById("app-content");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+
     function login() {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
+      const email = emailInput.value;
+      const password = passwordInput.value;
 
       if (email === correctEmail && password === correctPassword) {
-        document.getElementById("loginForm").style.display = "none";
-        document.getElementById("app").style.display = "block";
+        loginScreen.style.display = "none";
+        appContent.style.display = "block";
       } else {
         alert("البريد الإلكتروني أو كلمة المرور غير صحيحة");
       }
     }
 
     function logout() {
-      document.getElementById("app").style.display = "none";
-      document.getElementById("loginForm").style.display = "flex";
-      document.getElementById("email").value = "";
-      document.getElementById("password").value = "";
+      appContent.style.display = "none";
+      loginScreen.style.display = "block";
+      emailInput.value = correctEmail; // Remettre les valeurs par défaut pour la démo
+      passwordInput.value = correctPassword; // Remettre les valeurs par défaut pour la démo
     }
+
+    // Pré-remplir les champs pour faciliter la démo
+    document.addEventListener('DOMContentLoaded', () => {
+        emailInput.value = correctEmail;
+        passwordInput.value = correctPassword;
+    });
   </script>
 </body>
 </html>
