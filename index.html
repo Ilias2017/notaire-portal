@@ -1,157 +1,161 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
   <title>بوابة الموثق</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Google Font pour un rendu moderne -->
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- Police Cairo -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet">
 
   <style>
-    /* ---------- GÉNÉRAL ---------- */
-    :root{
-      --clr-vendeur:#27ae60;
-      --clr-acheteur:#e67e22;
-      --clr-certif:#9b59b6;
-      --clr-acte:#f39c12;
-      --clr-logout:#c0392b;
+    body {
+      font-family: 'Cairo', sans-serif;
+      background-color: #f4f6f8;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
     }
-    *{box-sizing:border-box;}
-    body{
-      margin:0;
-      font-family:'Cairo',sans-serif;
-      background:linear-gradient(135deg,#eef2f3,#ffffff);
-      display:flex;justify-content:center;align-items:center;
-      min-height:100vh;
-      color:#2c3e50;
-    }
-    .fade-in{
-      animation:fadeIn 0.9s ease;
-    }
-    @keyframes fadeIn{
-      from{opacity:0;transform:translateY(20px);}
-      to{opacity:1;transform:translateY(0);}
-    }
-    .container{
-      background:#fff;
-      padding:40px 30px;
-      border-radius:16px;
-      box-shadow:0 8px 24px rgba(0,0,0,0.08);
-      width:90%;max-width:720px;text-align:center;
-    }
-    h1,h2{margin:0 0 25px;}
-    h1{font-size:2.2rem;}
-    h2{font-size:1.6rem;}
 
-    /* ---------- FORMULAIRE ---------- */
-    input{
-      width:100%;padding:14px 16px;margin:8px 0 14px;
-      border:1px solid #ccc;border-radius:10px;font-size:1rem;
-      transition:border-color .3s;
+    .container {
+      background-color: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 500px;
+      width: 90%;
     }
-    input:focus{outline:none;border-color:#2980b9;}
 
-    /* ---------- BOUTONS GÉNÉRIQUES ---------- */
-    .btn{
-      display:block;width:100%;padding:16px;
-      border:none;border-radius:12px;
-      font-size:1.15rem;font-weight:bold;color:#fff;
-      cursor:pointer;text-decoration:none;
-      transition:transform .2s,box-shadow .2s,background-color .3s;
+    h2 {
+      color: #1f2d3d;
+      margin-bottom: 30px;
     }
-    .btn:hover{transform:translateY(-3px);box-shadow:0 6px 14px rgba(0,0,0,0.1);}
-    .btn:active{transform:translateY(-1px);}
 
-    /* ---------- COULEURS ---------- */
-    .vendeur{background:var(--clr-vendeur);}
-    .vendeur:hover{background:#219150;}
-    .acheteur{background:var(--clr-acheteur);}
-    .acheteur:hover{background:#d35400;}
-    .certif{background:var(--clr-certif);}
-    .certif:hover{background:#8e44ad;}
-    .acte{background:var(--clr-acte);}
-    .acte:hover{background:#e67e22;}
-    .logout{background:var(--clr-logout);}
-    .logout:hover{background:#962d22;}
+    .button-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
 
-    /* ---------- GRILLE DES BOUTONS ---------- */
-    .grid{display:grid;gap:22px;margin-top:20px;}
-    @media(min-width:600px){.grid{grid-template-columns:repeat(2,1fr);}}
-    @media(min-width:1024px){.btn{font-size:1.4rem;padding:24px;}
-    #portal-box .logout {margin-top: 30px;}
+    .btn {
+      padding: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+    }
+
+    .orange { background-color: #e67e22; }
+    .green { background-color: #27ae60; }
+    .yellow { background-color: #f39c12; }
+    .purple { background-color: #9b59b6; }
+
+    .logout {
+      margin-top: 25px;
+      background-color: #000000;
+      color: #ffffff;
+      font-family: 'Cairo', sans-serif;
+      padding: 10px 18px;
+      font-size: 14px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .logout:hover {
+      background-color: #333333;
+    }
+
+    /* Auth form */
+    #loginForm {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    input[type="email"], input[type="password"] {
+      padding: 12px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    #app {
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      .button-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .btn {
+        font-size: 16px;
+        padding: 16px;
+      }
+
+      .logout {
+        width: 100%;
+        font-size: 13px;
+      }
     }
   </style>
 </head>
 <body>
-
-  <!-- ----------- CONNEXION ----------- -->
-  <div class="container fade-in" id="login-box">
-    <h2>تسجيل الدخول إلى البوابة</h2>
+  <!-- Auth Form -->
+  <div class="container" id="loginForm">
+    <h2>تسجيل الدخول</h2>
     <input type="email" id="email" placeholder="البريد الإلكتروني">
     <input type="password" id="password" placeholder="كلمة المرور">
-    <button class="btn acheteur" onclick="login()">دخول</button>
+    <button class="btn green" onclick="login()">دخول</button>
   </div>
 
-  <!-- ----------- PORTAIL ----------- -->
-  <div class="container fade-in" id="portal-box" style="display:none;">
-    <h1>بوابة الموثق: إجراءات سريعة</h1>
-
-    <div class="grid">
-      <a class="btn vendeur"  target="_blank"
-         href="https://docs.google.com/forms/d/e/1FAIpQLSdAsN1xXgDPqFkS6AzEqTnNuqOI9EmojGrAHUf87SUkYX22UA/viewform?usp=header">
-         نموذج البائع</a>
-
-      <a class="btn acheteur" target="_blank"
-         href="https://docs.google.com/forms/d/e/1FAIpQLSfdwV0Z8cR5HmckG0JsZEJpMeB0Kxg-B-Ea3FYK302MfQI7VQ/viewform?usp=header">
-         نموذج المشتري</a>
-
-      <a class="btn certif"  target="_blank"
-         href="https://drive.google.com/drive/u/1/folders/1gEfNQH5Dvk69E2QmtLKW5WN3oRQY441S">
-         إيداع شهادة الملكية</a>
-
-      <a class="btn acte"    target="_blank"
-         href="https://n8n.srv903088.hstgr.cloud/form/e1b6de87-fe90-445d-984e-963bd6dbbc26">
-         إنشاء نموذج العقد</a>
+  <!-- Main App -->
+  <div class="container" id="app">
+    <h2>بوابة الموثق: إجراءات سريعة</h2>
+    <div class="button-grid">
+      <button class="btn orange">نموذج المشتري</button>
+      <button class="btn green">نموذج البائع</button>
+      <button class="btn yellow">إنشاء نموذج العقد</button>
+      <button class="btn purple">إيداع شهادة الملكية</button>
     </div>
-
-    <button class="btn logout" onclick="logout()">تسجيل الخروج</button>
+    <button class="logout" onclick="logout()">تسجيل الخروج</button>
   </div>
 
   <script>
-    // Identifiants codés en dur (démo)
-    const DEMO_EMAIL = 'demo@notaire.com';
-    const DEMO_PASSWORD = '1234';
+    const correctEmail = "demo@example.com";
+    const correctPassword = "demo123";
 
-    // Au chargement, afficher directement le portail si déjà authentifié
-    window.addEventListener('DOMContentLoaded',()=>{
-      if(localStorage.getItem('authenticated')==='true'){showPortal();}
-    });
+    function login() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
 
-    function login(){
-      const email    = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value.trim();
-
-      if(email===DEMO_EMAIL && password===DEMO_PASSWORD){
-        localStorage.setItem('authenticated','true');
-        showPortal();
-      }else{
-        alert('البريد الإلكتروني أو كلمة المرور غير صحيحة');
+      if (email === correctEmail && password === correctPassword) {
+        document.getElementById("loginForm").style.display = "none";
+        document.getElementById("app").style.display = "block";
+      } else {
+        alert("البريد الإلكتروني أو كلمة المرور غير صحيحة");
       }
     }
 
-    function logout(){
-      localStorage.removeItem('authenticated');
-      // retour à l'écran de connexion
-      document.getElementById('portal-box').style.display='none';
-      document.getElementById('login-box').style.display='block';
-    }
-
-    function showPortal(){
-      document.getElementById('login-box').style.display='none';
-      document.getElementById('portal-box').style.display='block';
+    function logout() {
+      document.getElementById("app").style.display = "none";
+      document.getElementById("loginForm").style.display = "flex";
+      document.getElementById("email").value = "";
+      document.getElementById("password").value = "";
     }
   </script>
-
 </body>
 </html>
