@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>بوابة الموثق</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(135deg, #f4f7f6, #e8f0ef);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+      color: #2c3e50;
+      animation: fadeIn 1s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .container {
+      background-color: #ffffff;
+      padding: 40px 30px;
+      border-radius: 16px;
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+      max-width: 640px;
+      width: 100%;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.2em;
+      margin-bottom: 30px;
+      color: #34495e;
+    }
+
+    .button-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    @media (min-width: 600px) {
+      .button-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .action-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 16px 20px;
+      border: none;
+      border-radius: 10px;
+      background-color: #3498db;
+      color: white;
+      font-size: 1.1em;
+      font-weight: bold;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .action-button:hover {
+      background-color: #2980b9;
+      transform: translateY(-2px);
+    }
+
+    .action-button:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-vendeur { background-color: #2ecc71; }
+    .form-vendeur:hover { background-color: #27ae60; }
+
+    .form-acheteur { background-color: #e67e22; }
+    .form-acheteur:hover { background-color: #d35400; }
+
+    .depot-certificat { background-color: #9b59b6; }
+    .depot-certificat:hover { background-color: #8e44ad; }
+
+    .generer-acte { background-color: #f39c12; }
+    .generer-acte:hover { background-color: #e67e22; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>بوابة الموثق: إجراءات سريعة</h1>
+    <div class="button-grid">
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSdAsN1xXgDPqFkS6AzEqTnNuqOI9EmojGrAHUf87SUkYX22UA/viewform?usp=header" target="_blank" class="action-button form-vendeur">
+        🧾 نموذج البائع
+      </a>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSfdwV0Z8cR5HmckG0JsZEJpMeB0Kxg-B-Ea3FYK302MfQI7VQ/viewform?usp=header" target="_blank" class="action-button form-acheteur">
+        📄 نموذج المشتري
+      </a>
+      <a href="https://drive.google.com/drive/u/1/folders/1gEfNQH5Dvk69E2QmtLKW5WN3oRQY441S" target="_blank" class="action-button depot-certificat">
+        🏢 إيداع شهادة الملكية
+      </a>
+      <a href="https://n8n.srv903088.hstgr.cloud/form/e1b6de87-fe90-445d-984e-963bd6dbbc26" target="_blank" class="action-button generer-acte">
+        ✍️ إنشاء نموذج العقد
+      </a>
+    </div>
+  </div>
+</body>
+</html>
