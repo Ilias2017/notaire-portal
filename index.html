@@ -87,7 +87,7 @@
             transform: translateY(-1px);
         }
 
-        /* Styles for main application buttons (unchanged) */
+        /* Styles for main application buttons */
         .button-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -99,6 +99,15 @@
             .button-grid {
                 grid-template-columns: 1fr 1fr;
             }
+        }
+        
+        /* Style for button group */
+        .button-group {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* Space between main button and copy button */
+            justify-content: center; /* Center the group */
+            flex-wrap: wrap; /* Allow wrapping on small screens */
         }
 
         .action-button {
@@ -117,6 +126,7 @@
             transition: all 0.3s ease;
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
             font-family: 'Cairo', sans-serif;
+            flex-grow: 1; /* Allow main button to grow */
         }
 
         .action-button:hover {
@@ -127,6 +137,35 @@
             transform: translateY(0);
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
         }
+
+        /* Style for copy button */
+        .copy-button {
+            background-color: #BDC3C7; /* Gris clair */
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 16px; /* Adjust padding to match height of action-button */
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px; /* Fixed width for a square-ish button */
+            height: 45px; /* Fixed height */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .copy-button:hover {
+            background-color: #AAB7B8; /* Un peu plus sombre au survol */
+            transform: translateY(-1px);
+        }
+
+        .copy-button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+        }
+
 
         .form-vendeur { background-color: #2ecc71; }
         .form-vendeur:hover { background-color: #27ae60; }
@@ -200,22 +239,50 @@
     <div class="container" id="app-content">
         <h1>بوابة الموثق: إجراءات سريعة</h1>
         <div class="button-grid">
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdAsN1xXgDPqFkS6AzEqTnNuqOI9EmojGrAHUf87SUkYX22UA/viewform?usp=header" target="_blank" class="action-button form-vendeur">
-                <i class="fas fa-user-tag"></i> نموذج البائع
-            </a>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSfdwV0Z8cR5HmckG0JsZEJpMeB0Kxg-B-Ea3FYK302MfQI7VQ/viewform?usp=header" target="_blank" class="action-button form-acheteur">
-                <i class="fas fa-shopping-bag"></i> نموذج المشتري
-            </a>
-            <a href="https://drive.google.com/drive/u/1/folders/1gEfNQH5Dvk69E2QmtLKW5WN3oRQY441S?usp=drive_link" target="_blank" class="action-button depot-certificat">
-                <i class="fas fa-scroll"></i> إيداع شهادة الملكية
-            </a>
+            <div class="button-group">
+                <a onclick="loadIntoIframeAndScroll('https://docs.google.com/forms/d/e/1FAIpQLSdAsN1xXgDPqFkS6AzEqTnNuqOI9EmojGrAHUf87SUkYX22UA/viewform')" class="action-button form-vendeur">
+                    <i class="fas fa-user-tag"></i> نموذج البائع
+                </a>
+                <button class="copy-button" onclick="copyLinkToClipboard('https://docs.google.com/forms/d/e/1FAIpQLSdAsN1xXgDPqFkS6AzEqTnNuqOI9EmojGrAHUf87SUkYX22UA/viewform', this)">
+                    <i class="fas fa-copy"></i>
+                </button>
+            </div>
             
-            <a onclick="loadIntoIframeAndScroll('https://n8n.srv903088.hstgr.cloud/form/e1b6de87-fe90-445d-984e-963bd6dbbc26')" class="action-button generer-acte">
-                <i class="fas fa-file-signature"></i> إنشاء نموذج العقد
-            </a>
-            <a onclick="loadIntoIframeAndScroll('https://docs.google.com/spreadsheets/d/1jdgUzOcearYjT9I5hMo8cY-jDHt4wlf2nIuf8p2IoJY/edit?gid=288743365&rm=minimal')" class="action-button correction-info">
-                <i class="fas fa-edit"></i> تصحيح المعلومات
-            </a>
+            <div class="button-group">
+                <a onclick="loadIntoIframeAndScroll('https://docs.google.com/forms/d/e/1FAIpQLSfdwV0Z8cR5HmckG0JsZEJpMeB0Kxg-B-Ea3FYK302MfQI7VQ/viewform')" class="action-button form-acheteur">
+                    <i class="fas fa-shopping-bag"></i> نموذج المشتري
+                </a>
+                <button class="copy-button" onclick="copyLinkToClipboard('https://docs.google.com/forms/d/e/1FAIpQLSfdwV0Z8cR5HmckG0JsZEJpMeB0Kxg-B-Ea3FYK302MfQI7VQ/viewform', this)">
+                    <i class="fas fa-copy"></i>
+                </button>
+            </div>
+
+            <div class="button-group">
+                <a href="https://drive.google.com/drive/u/1/folders/1gEfNQH5Dvk69E2QmtLKW5WN3oRQY441S" target="_blank" class="action-button depot-certificat">
+                    <i class="fas fa-scroll"></i> إيداع شهادة الملكية
+                </a>
+                <button class="copy-button" onclick="copyLinkToClipboard('https://drive.google.com/drive/u/1/folders/1gEfNQH5Dvk69E2QmtLKW5WN3oRQY441S', this)">
+                    <i class="fas fa-copy"></i>
+                </button>
+            </div>
+            
+            <div class="button-group">
+                <a onclick="loadIntoIframeAndScroll('https://n8n.srv903088.hstgr.cloud/form/e1b6de87-fe90-445d-984e-963bd6dbbc26')" class="action-button generer-acte">
+                    <i class="fas fa-file-signature"></i> إنشاء نموذج العقد
+                </a>
+                <button class="copy-button" onclick="copyLinkToClipboard('https://drive.google.com/drive/u/1/folders/1QPYQf8KNGbJ2UybJlIZ0drTsmvd0m1Uu', this)">
+                    <i class="fas fa-copy"></i>
+                </button>
+            </div>
+            
+            <div class="button-group">
+                <a onclick="loadIntoIframeAndScroll('https://docs.google.com/spreadsheets/d/1jdgUzOcearYjT9I5hMo8cY-jDHt4wlf2nIuf8p2IoJY/edit?gid=288743365#gid=288743365')" class="action-button correction-info">
+                    <i class="fas fa-edit"></i> تصحيح المعلومات
+                </a>
+                <button class="copy-button" onclick="copyLinkToClipboard('https://docs.google.com/spreadsheets/d/1jdgUzOcearYjT9I5hMo8cY-jDHt4wlf2nIuf8p2IoJY/edit?gid=288743365#gid=288743365', this)">
+                    <i class="fas fa-copy"></i>
+                </button>
+            </div>
         </div>
 
         <iframe id="content-frame" src="" frameborder="0" allowfullscreen></iframe>
@@ -257,13 +324,34 @@
             contentFrame.src = ""; // Clear iframe content
         }
 
-        // Nouvelle fonction pour charger l'URL dans l'iframe ET faire défiler la page
+        // Fonction pour charger l'URL dans l'iframe ET faire défiler la page
         function loadIntoIframeAndScroll(url) {
             contentFrame.src = url; // Définit la source de l'iframe
             contentFrame.style.display = "block"; // Affiche l'iframe
 
             // Fait défiler la page pour que l'iframe soit visible
             contentFrame.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+
+        // Nouvelle fonction pour copier le lien dans le presse-papiers
+        async function copyLinkToClipboard(link, buttonElement) {
+            try {
+                await navigator.clipboard.writeText(link);
+                const originalContent = buttonElement.innerHTML;
+                const originalBgColor = buttonElement.style.backgroundColor;
+                
+                buttonElement.innerHTML = '<i class="fas fa-check"></i>'; // Icône de validation
+                buttonElement.style.backgroundColor = '#28a745'; // Vert de succès
+
+                setTimeout(() => {
+                    buttonElement.innerHTML = originalContent; // Revenir à l'icône originale
+                    buttonElement.style.backgroundColor = originalBgColor; // Revenir à la couleur originale
+                }, 2000); // Revenir après 2 secondes
+                
+            } catch (err) {
+                console.error('Erreur lors de la copie du lien : ', err);
+                alert('Échec de la copie du lien. Veuillez copier manuellement : ' + link);
+            }
         }
 
         // Pre-fill fields for easier demo (unchanged)
