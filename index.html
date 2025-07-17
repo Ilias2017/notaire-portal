@@ -37,6 +37,7 @@
             display: flex;
             flex-direction: column;
             gap: 20px;
+            position: relative;
         }
 
         h1 {
@@ -45,7 +46,6 @@
             color: #34495e;
         }
 
-        /* Styles for login form (unchanged) */
         .auth-form {
             display: flex;
             flex-direction: column;
@@ -60,6 +60,7 @@
             border: 1px solid #ccc;
             border-radius: 8px;
             font-family: 'Cairo', sans-serif;
+            text-align: right;
         }
 
         .auth-form input[type="email"]:focus,
@@ -87,7 +88,6 @@
             transform: translateY(-1px);
         }
 
-        /* Styles for main application buttons */
         .button-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -101,13 +101,12 @@
             }
         }
         
-        /* Style for button group */
         .button-group {
             display: flex;
             align-items: center;
-            gap: 10px; /* Space between main button and copy button */
-            justify-content: center; /* Center the group */
-            flex-wrap: wrap; /* Allow wrapping on small screens */
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
         }
 
         .action-button {
@@ -126,7 +125,7 @@
             transition: all 0.3s ease;
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
             font-family: 'Cairo', sans-serif;
-            flex-grow: 1; /* Allow main button to grow */
+            flex-grow: 1;
         }
 
         .action-button:hover {
@@ -138,26 +137,25 @@
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
         }
 
-        /* Style for copy button */
         .copy-button {
-            background-color: #BDC3C7; /* Gris clair */
+            background-color: #BDC3C7;
             color: white;
             border: none;
             border-radius: 10px;
-            padding: 16px; /* Adjust padding to match height of action-button */
+            padding: 16px;
             cursor: pointer;
             font-size: 1em;
             transition: background-color 0.3s ease, transform 0.2s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 45px; /* Fixed width for a square-ish button */
-            height: 45px; /* Fixed height */
+            width: 45px;
+            height: 45px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
         }
 
         .copy-button:hover {
-            background-color: #AAB7B8; /* Un peu plus sombre au survol */
+            background-color: #AAB7B8;
             transform: translateY(-1px);
         }
 
@@ -165,7 +163,6 @@
             transform: translateY(0);
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
         }
-
 
         .form-vendeur { background-color: #2ecc71; }
         .form-vendeur:hover { background-color: #27ae60; }
@@ -182,21 +179,47 @@
         .correction-info { background-color: #3498db; }
         .correction-info:hover { background-color: #2980b9; }
 
-        /* Styles for logout button (unchanged) */
+        /* Styles for inactive (placeholder) button */
+        .inactive-button {
+            background-color: #cccccc !important; /* Force gray */
+            cursor: not-allowed !important;
+            color: #666666 !important; /* Lighter text color */
+        }
+
+        .inactive-button:hover {
+            background-color: #cccccc !important; /* Keep gray on hover */
+            transform: none !important; /* No transform on hover */
+        }
+
+        /* Also make the copy button next to it inactive */
+        .inactive-copy-button {
+            background-color: #e0e0e0 !important;
+            cursor: not-allowed !important;
+            color: #999999 !important;
+        }
+
+        .inactive-copy-button:hover {
+            background-color: #e0e0e0 !important;
+            transform: none !important;
+        }
+
         .logout-button {
-            margin-top: 30px;
-            padding: 10px 20px;
+            position: absolute;
+            top: 20px;
+            left: 20px; /* Conserve left pour être en haut à droite en RTL */
+            padding: 8px 15px;
             border: none;
             border-radius: 8px;
             background-color: #e74c3c;
             color: white;
-            font-size: 0.95em;
+            font-size: 0.85em;
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s ease;
             font-family: 'Cairo', sans-serif;
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            z-index: 1000;
         }
 
         .logout-button:hover {
@@ -204,25 +227,47 @@
             transform: translateY(-1px);
         }
 
-        /* Styles for iframe (unchanged, still wide and tall) */
         #content-frame {
             width: 100%;
-            min-height: 75vh;
+            min-height: 150vh;
             height: auto;
             border: 1px solid #ddd;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-            display: none; /* Hidden by default */
+            display: none;
             margin-top: 20px;
         }
 
-        /* To hide/show sections (unchanged) */
         #app-content {
             display: none;
         }
 
         #login-screen {
-            display: block;
+            display: none; /* Rendu visible par showLoginScreen() */
+        }
+
+        #register-screen {
+            /* Cette section n'est plus visible car elle a été retirée du HTML ou son display est forcé à none */
+            display: none; 
+        }
+        
+        .toggle-auth-form {
+            margin-top: 15px;
+            font-size: 0.9em;
+        }
+        .toggle-auth-form a {
+            color: #3498db;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .toggle-auth-form a:hover {
+            text-decoration: underline;
+        }
+
+        #user-email-display {
+            font-weight: bold;
+            color: #34495e;
+            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -230,14 +275,19 @@
     <div class="container" id="login-screen">
         <h1>تسجيل الدخول</h1>
         <div class="auth-form">
-            <input type="email" id="email" placeholder="البريد الإلكتروني" value="demo@example.com">
-            <input type="password" id="password" placeholder="كلمة المرور" value="demo123">
+            <input type="email" id="login-email" placeholder="البريد الإلكتروني" required>
+            <input type="password" id="login-password" placeholder="كلمة المرور" required>
             <button class="auth-button" onclick="login()">دخول</button>
-        </div>
+            </div>
     </div>
 
     <div class="container" id="app-content">
+        <button class="logout-button" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> تسجيل الخروج
+        </button>
+
         <h1>بوابة الموثق: إجراءات سريعة</h1>
+        <p id="user-email-display"></p>
         <div class="button-grid">
             <div class="button-group">
                 <a onclick="loadIntoIframeAndScroll('https://docs.google.com/forms/d/e/1FAIpQLSdAsN1xXgDPqFkS6AzEqTnNuqOI9EmojGrAHUf87SUkYX22UA/viewform')" class="action-button form-vendeur">
@@ -276,10 +326,19 @@
             </div>
             
             <div class="button-group">
-                <a onclick="loadIntoIframeAndScroll('https://docs.google.com/spreadsheets/d/1jdgUzOcearYjT9I5hMo8cY-jDHt4wlf2nIuf8p2IoJY/edit?gid=288743365#gid=288743365')" class="action-button correction-info">
+                <a onclick="loadIntoIframeAndScroll('https://docs.google.com/spreadsheets/d/1jdgUzOcearYjT9I5hMo8cY-jDHt4wlf2nIuf8p2IoJY/edit?gid=702067380#gid=702067380')" class="action-button correction-info">
                     <i class="fas fa-edit"></i> تصحيح المعلومات
                 </a>
-                <button class="copy-button" onclick="copyLinkToClipboard('https://docs.google.com/spreadsheets/d/1jdgUzOcearYjT9I5hMo8cY-jDHt4wlf2nIuf8p2IoJY/edit?gid=288743365#gid=288743365', this)">
+                <button class="copy-button" onclick="copyLinkToClipboard('https://docs.google.com/spreadsheets/d/1jdgUzOcearYjT9I5hMo8cY-jDHt4wlf2nIuf8p2IoJY/edit?gid=702067380#gid=702067380', this)">
+                    <i class="fas fa-copy"></i>
+                </button>
+            </div>
+
+            <div class="button-group">
+                <a onclick="alert('Ce bouton est temporairement inactif. Revenez plus tard !')" class="action-button inactive-button">
+                    <i class="fas fa-calculator"></i> صياغة عرض سعر
+                </a>
+                <button class="copy-button inactive-copy-button" onclick="alert('Ce bouton est temporairement inactif. Revenez plus tard !')">
                     <i class="fas fa-copy"></i>
                 </button>
             </div>
@@ -287,78 +346,179 @@
 
         <iframe id="content-frame" src="" frameborder="0" allowfullscreen></iframe>
 
-        <button class="logout-button" onclick="logout()">
-            <i class="fas fa-sign-out-alt"></i> تسجيل الخروج
-        </button>
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
     <script>
-        // Hardcoded demo credentials (unchanged)
-        const correctEmail = "demo@example.com";
-        const correctPassword = "demo123";
+        const firebaseConfig = {
+            apiKey: "AIzaSyAIenA86_ZRPT53z3ZJhLFRM5Rk_1YKRyI",
+            authDomain: "assistant-notarial.firebaseapp.com",
+            projectId: "assistant-notarial",
+            storageBucket: "assistant-notarial.firebasestorage.app",
+            messagingSenderId: "796136299126",
+            appId: "1:796136299126:web:c653efd43704edb2ee5d57",
+            measurementId: "G-X6YBHNFWRT"
+        };
+
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = app.auth();
 
         const loginScreen = document.getElementById("login-screen");
+        // registerScreen est conservé comme référence mais n'est plus utilisé ni affiché
+        const registerScreen = document.getElementById("register-screen"); 
         const appContent = document.getElementById("app-content");
-        const emailInput = document.getElementById("email");
-        const passwordInput = document.getElementById("password");
-        const contentFrame = document.getElementById("content-frame"); // Reference to the iframe
+        const loginEmailInput = document.getElementById("login-email");
+        const loginPasswordInput = document.getElementById("login-password");
+        // Les champs d'inscription ne sont plus nécessaires
+        // const registerEmailInput = document.getElementById("register-email");
+        // const registerPasswordInput = document.getElementById("register-password");
+        const contentFrame = document.getElementById("content-frame");
+        const userEmailDisplay = document.getElementById("user-email-display");
+
+        function showLoginScreen() {
+            loginScreen.style.display = "flex";
+            // Assurez-vous que registerScreen est toujours masqué, même si retiré du DOM
+            if (registerScreen) registerScreen.style.display = "none"; 
+            appContent.style.display = "none";
+            contentFrame.style.display = "none";
+            contentFrame.src = "";
+        }
+
+        // Cette fonction n'est plus appelée, mais elle est conservée au cas où
+        function showRegisterScreen() {
+            loginScreen.style.display = "none";
+            if (registerScreen) registerScreen.style.display = "flex";
+            appContent.style.display = "none";
+            contentFrame.style.display = "none";
+            contentFrame.src = "";
+        }
+
+        function showAppContent(userEmail) {
+            loginScreen.style.display = "none";
+            if (registerScreen) registerScreen.style.display = "none";
+            appContent.style.display = "flex";
+            userEmailDisplay.textContent = `مرحباً بك، ${userEmail} !`;
+        }
+
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                console.log("Utilisateur connecté :", user.email);
+                showAppContent(user.email);
+            } else {
+                console.log("Aucun utilisateur connecté.");
+                showLoginScreen();
+            }
+        });
 
         function login() {
-            const email = emailInput.value;
-            const password = passwordInput.value;
+            const email = loginEmailInput.value;
+            const password = loginPasswordInput.value;
 
-            if (email === correctEmail && password === correctPassword) {
-                loginScreen.style.display = "none";
-                appContent.style.display = "flex";
-            } else {
-                alert("البريد الإلكتروني أو كلمة المرور غير صحيحة");
-            }
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    console.log("Connexion réussie pour :", userCredential.user.email);
+                })
+                .catch((error) => {
+                    alert("خطأ في تسجيل الدخول: " + error.message);
+                    console.error("Erreur de connexion :", error);
+                });
         }
+
+        // La fonction register() n'est plus appelée ni nécessaire
+        /*
+        function register() {
+            const email = registerEmailInput.value;
+            const password = registerPasswordInput.value;
+
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    alert("تم إنشاء حسابك بنجاح! يمكنك الآن تسجيل الدخول.");
+                    console.log("Compte créé pour :", userCredential.user.email);
+                })
+                .catch((error) => {
+                    alert("خطأ في التسجيل: " + error.message);
+                    console.error("Erreur d'inscription :", error);
+                });
+        }
+        */
 
         function logout() {
-            appContent.style.display = "none";
-            loginScreen.style.display = "block";
-            emailInput.value = correctEmail;
-            passwordInput.value = correctPassword;
-            contentFrame.style.display = "none"; // Hide iframe on logout
-            contentFrame.src = ""; // Clear iframe content
+            auth.signOut()
+                .then(() => {
+                    console.log("Déconnexion réussie.");
+                })
+                .catch((error) => {
+                    console.error("Erreur de déconnexion :", error);
+                    alert("خطأ أثناء تسجيل الخروج: " + error.message);
+                });
         }
 
-        // Fonction pour charger l'URL dans l'iframe ET faire défiler la page
         function loadIntoIframeAndScroll(url) {
-            contentFrame.src = url; // Définit la source de l'iframe
-            contentFrame.style.display = "block"; // Affiche l'iframe
-
-            // Fait défiler la page pour que l'iframe soit visible
-            contentFrame.scrollIntoView({ behavior: "smooth", block: "center" });
+            contentFrame.src = url;
+            contentFrame.style.display = "block";
+            contentFrame.scrollIntoView({ behavior: "smooth", block: "start" }); 
         }
 
-        // Nouvelle fonction pour copier le lien dans le presse-papiers
         async function copyLinkToClipboard(link, buttonElement) {
             try {
                 await navigator.clipboard.writeText(link);
                 const originalContent = buttonElement.innerHTML;
                 const originalBgColor = buttonElement.style.backgroundColor;
                 
-                buttonElement.innerHTML = '<i class="fas fa-check"></i>'; // Icône de validation
-                buttonElement.style.backgroundColor = '#28a745'; // Vert de succès
+                buttonElement.innerHTML = '<i class="fas fa-check"></i>';
+                buttonElement.style.backgroundColor = '#28a745';
 
                 setTimeout(() => {
-                    buttonElement.innerHTML = originalContent; // Revenir à l'icône originale
-                    buttonElement.style.backgroundColor = originalBgColor; // Revenir à la couleur originale
-                }, 2000); // Revenir après 2 secondes
+                    buttonElement.innerHTML = originalContent;
+                    buttonElement.style.backgroundColor = originalBgColor;
+                }, 2000);
                 
             } catch (err) {
                 console.error('Erreur lors de la copie du lien : ', err);
-                alert('Échec de la copie du lien. Veuillez copier manuellement : ' + link);
+                alert('فشل نسخ الرابط. يرجى النسخ يدوياً: ' + link);
             }
         }
 
-        // Pre-fill fields for easier demo (unchanged)
-        document.addEventListener('DOMContentLoaded', () => {
-            emailInput.value = correctEmail;
-            passwordInput.value = correctPassword;
-        });
+        async function triggerN8nWorkflow() {
+            const n8nWebhookUrl = "https://n8n.srv903088.hstgr.cloud/webhook/a5d6f7a8-b9c0-d1e2-f3g4-h5i6j7k8l9m0";
+            
+            const user = auth.currentUser;
+            if (!user) {
+                alert("يجب عليك تسجيل الدخول لتشغيل سير عمل n8n.");
+                return;
+            }
+            
+            try {
+                const idToken = await user.getIdToken();
+
+                const response = await fetch(n8nWebhookUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${idToken}`
+                    },
+                    body: JSON.stringify({
+                        message: "بيانات تم إرسالها من الصفحة المؤمنة",
+                        userEmail: user.email,
+                        firebaseIdToken: idToken
+                    }),
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    alert("تم تشغيل سير عمل n8n بنجاح!");
+                    console.log('Succès n8n:', data);
+                } else {
+                    alert(`خطأ في تشغيل سير عمل n8n: ${response.status} - ${response.statusText}`);
+                    console.error('Erreur n8n:', response.status, response.statusText);
+                }
+            } catch (error) {
+                alert(`خطأ أثناء الاتصال بـ n8n: ${error.message}`);
+                console.error('Erreur lors de l\'appel n8n:', error);
+            }
+        }
     </script>
 </body>
 </html>
