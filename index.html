@@ -1,524 +1,651 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>بوابة الموثق</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
-    <style>
-        body {
-            font-family: 'Cairo', sans-serif;
-            background: linear-gradient(135deg, #f4f7f6, #e8f0ef);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-            color: #2c3e50;
-            animation: fadeIn 1s ease-in;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .container {
-            background-color: #ffffff;
-            padding: 40px 30px;
-            border-radius: 16px;
-            max-width: 1200px;
-            width: 95%;
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            position: relative;
-        }
-
-        h1 {
-            font-size: 2.2em;
-            margin-bottom: 30px;
-            color: #34495e;
-        }
-
-        .auth-form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .auth-form input[type="email"],
-        .auth-form input[type="password"] {
-            padding: 12px 15px;
-            font-size: 1em;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-family: 'Cairo', sans-serif;
-            text-align: right;
-        }
-
-        .auth-form input[type="email"]:focus,
-        .auth-form input[type="password"]:focus {
-            outline: none;
-            border-color: #3498db;
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-        }
-
-        .auth-button {
-            padding: 12px 20px;
-            border: none;
-            border-radius: 8px;
-            background-color: #3498db;
-            color: white;
-            font-size: 1.1em;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            font-family: 'Cairo', sans-serif;
-        }
-
-        .auth-button:hover {
-            background-color: #2980b9;
-            transform: translateY(-1px);
-        }
-
-        .button-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        @media (min-width: 600px) {
-            .button-grid {
-                grid-template-columns: 1fr 1fr;
+    <!DOCTYPE html>
+    <html lang="ar" dir="rtl">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>بوابة الموثق</title>
+        <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <style>
+            body {
+                font-family: 'Cairo', sans-serif;
+                background: linear-gradient(135deg, #f4f7f6, #e8f0ef);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+                margin: 0;
+                padding: 20px;
+                color: #2c3e50;
+                animation: fadeIn 1s ease-in;
+                box-sizing: border-box; /* Ensure padding doesn't cause overflow */
             }
-        }
-        
-        .button-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
 
-        .action-button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 16px 20px;
-            border: none;
-            border-radius: 10px;
-            color: white;
-            font-size: 1.1em;
-            font-weight: bold;
-            text-decoration: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-            font-family: 'Cairo', sans-serif;
-            flex-grow: 1;
-        }
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
 
-        .action-button:hover {
-            transform: translateY(-2px);
-        }
+            .container {
+                background-color: #ffffff;
+                padding: 40px 30px;
+                border-radius: 16px;
+                max-width: 1200px;
+                width: 95%;
+                box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+                text-align: center;
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                position: relative;
+            }
 
-        .action-button:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-        }
+            h1 {
+                font-size: 2.2em;
+                margin-bottom: 30px;
+                color: #34495e;
+            }
 
-        .copy-button {
-            background-color: #BDC3C7;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            padding: 16px;
-            cursor: pointer;
-            font-size: 1em;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 45px;
-            height: 45px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
-        }
+            .auth-form {
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+                margin-top: 20px;
+            }
 
-        .copy-button:hover {
-            background-color: #AAB7B8;
-            transform: translateY(-1px);
-        }
+            .auth-form input[type="email"],
+            .auth-form input[type="password"] {
+                padding: 12px 15px;
+                font-size: 1em;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                font-family: 'Cairo', sans-serif;
+                text-align: right;
+            }
 
-        .copy-button:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
-        }
+            .auth-form input[type="email"]:focus,
+            .auth-form input[type="password"]:focus {
+                outline: none;
+                border-color: #3498db;
+                box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+            }
 
-        .form-vendeur { background-color: #2ecc71; }
-        .form-vendeur:hover { background-color: #27ae60; }
+            .auth-button {
+                padding: 12px 20px;
+                border: none;
+                border-radius: 8px;
+                background-color: #3498db;
+                color: white;
+                font-size: 1.1em;
+                font-weight: bold;
+                cursor: pointer;
+                transition: background-color 0.3s ease, transform 0.2s ease;
+                font-family: 'Cairo', sans-serif;
+            }
 
-        .form-acheteur { background-color: #e67e22; }
-        .form-acheteur:hover { background-color: #d35400; }
+            .auth-button:hover {
+                background-color: #2980b9;
+                transform: translateY(-1px);
+            }
 
-        .depot-certificat { background-color: #9b59b6; }
-        .depot-certificat:hover { background-color: #8e44ad; }
+            .button-grid {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 20px;
+                margin-bottom: 20px;
+            }
 
-        .generer-acte { background-color: #f39c12; }
-        .generer-acte:hover { background-color: #e67e22; }
-
-        .correction-info { background-color: #3498db; }
-        .correction-info:hover { background-color: #2980b9; }
-
-        /* Styles for inactive (placeholder) button */
-        .inactive-button {
-            background-color: #cccccc !important; /* Force gray */
-            cursor: not-allowed !important;
-            color: #666666 !important; /* Lighter text color */
-        }
-
-        .inactive-button:hover {
-            background-color: #cccccc !important; /* Keep gray on hover */
-            transform: none !important; /* No transform on hover */
-        }
-
-        /* Also make the copy button next to it inactive */
-        .inactive-copy-button {
-            background-color: #e0e0e0 !important;
-            cursor: not-allowed !important;
-            color: #999999 !important;
-        }
-
-        .inactive-copy-button:hover {
-            background-color: #e0e0e0 !important;
-            transform: none !important;
-        }
-
-        .logout-button {
-            position: absolute;
-            top: 20px;
-            left: 20px; /* Conserve left pour être en haut à droite en RTL */
-            padding: 8px 15px;
-            border: none;
-            border-radius: 8px;
-            background-color: #e74c3c;
-            color: white;
-            font-size: 0.85em;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            font-family: 'Cairo', sans-serif;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            z-index: 1000;
-        }
-
-        .logout-button:hover {
-            background-color: #c0392b;
-            transform: translateY(-1px);
-        }
-
-        #content-frame {
-            width: 100%;
-            min-height: 150vh;
-            height: auto;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-            display: none;
-            margin-top: 20px;
-        }
-
-        #app-content {
-            display: none;
-        }
-
-        #login-screen {
-            display: none; /* Rendu visible par showLoginScreen() */
-        }
-
-        #register-screen {
-            /* Cette section n'est plus visible car elle a été retirée du HTML ou son display est forcé à none */
-            display: none; 
-        }
-        
-        .toggle-auth-form {
-            margin-top: 15px;
-            font-size: 0.9em;
-        }
-        .toggle-auth-form a {
-            color: #3498db;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        .toggle-auth-form a:hover {
-            text-decoration: underline;
-        }
-
-        #user-email-display {
-            font-weight: bold;
-            color: #34495e;
-            margin-bottom: 10px;
-        }
-    </style>
-</head>
-<body>
-    <div class="container" id="login-screen">
-        <h1>تسجيل الدخول</h1>
-        <div class="auth-form">
-            <input type="email" id="login-email" placeholder="البريد الإلكتروني" required>
-            <input type="password" id="login-password" placeholder="كلمة المرور" required>
-            <button class="auth-button" onclick="login()">دخول</button>
-            </div>
-    </div>
-
-    <div class="container" id="app-content">
-        <button class="logout-button" onclick="logout()">
-            <i class="fas fa-sign-out-alt"></i> تسجيل الخروج
-        </button>
-
-        <h1>بوابة الموثق: إجراءات سريعة</h1>
-        <p id="user-email-display"></p>
-        <div class="button-grid">
-            <div class="button-group">
-                <a onclick="loadIntoIframeAndScroll('https://docs.google.com/forms/d/e/1FAIpQLSdAsN1xXgDPqFkS6AzEqTnNuqOI9EmojGrAHUf87SUkYX22UA/viewform')" class="action-button form-vendeur">
-                    <i class="fas fa-user-tag"></i> نموذج البائع
-                </a>
-                <button class="copy-button" onclick="copyLinkToClipboard('https://docs.google.com/forms/d/e/1FAIpQLSdAsN1xXgDPqFkS6AzEqTnNuqOI9EmojGrAHUf87SUkYX22UA/viewform', this)">
-                    <i class="fas fa-copy"></i>
-                </button>
-            </div>
+            @media (min-width: 600px) {
+                .button-grid {
+                    grid-template-columns: 1fr 1fr;
+                }
+            }
             
-            <div class="button-group">
-                <a onclick="loadIntoIframeAndScroll('https://docs.google.com/forms/d/e/1FAIpQLSfdwV0Z8cR5HmckG0JsZEJpMeB0Kxg-B-Ea3FYK302MfQI7VQ/viewform')" class="action-button form-acheteur">
-                    <i class="fas fa-shopping-bag"></i> نموذج المشتري
-                </a>
-                <button class="copy-button" onclick="copyLinkToClipboard('https://docs.google.com/forms/d/e/1FAIpQLSfdwV0Z8cR5HmckG0JsZEJpMeB0Kxg-B-Ea3FYK302MfQI7VQ/viewform', this)">
-                    <i class="fas fa-copy"></i>
-                </button>
-            </div>
+            .button-group {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
 
-            <div class="button-group">
-                <a href="https://drive.google.com/drive/u/1/folders/1gEfNQH5Dvk69E2QmtLKW5WN3oRQY441S" target="_blank" class="action-button depot-certificat">
-                    <i class="fas fa-scroll"></i> إيداع شهادة الملكية
-                </a>
-                <button class="copy-button" onclick="copyLinkToClipboard('https://drive.google.com/drive/u/1/folders/1gEfNQH5Dvk69E2QmtLKW5WN3oRQY441S', this)">
-                    <i class="fas fa-copy"></i>
-                </button>
-            </div>
-            
-            <div class="button-group">
-                <a onclick="loadIntoIframeAndScroll('https://n8n.srv903088.hstgr.cloud/form/e1b6de87-fe90-445d-984e-963bd6dbbc26')" class="action-button generer-acte">
-                    <i class="fas fa-file-signature"></i> إنشاء نموذج العقد
-                </a>
-                <button class="copy-button" onclick="copyLinkToClipboard('https://drive.google.com/drive/u/1/folders/1QPYQf8KNGbJ2UybJlIZ0drTsmvd0m1Uu', this)">
-                    <i class="fas fa-copy"></i>
-                </button>
-            </div>
-            
-            <div class="button-group">
-                <a onclick="loadIntoIframeAndScroll('https://docs.google.com/spreadsheets/d/1jdgUzOcearYjT9I5hMo8cY-jDHt4wlf2nIuf8p2IoJY/edit?gid=702067380#gid=702067380')" class="action-button correction-info">
-                    <i class="fas fa-edit"></i> تصحيح المعلومات
-                </a>
-                <button class="copy-button" onclick="copyLinkToClipboard('https://docs.google.com/spreadsheets/d/1jdgUzOcearYjT9I5hMo8cY-jDHt4wlf2nIuf8p2IoJY/edit?gid=702067380#gid=702067380', this)">
-                    <i class="fas fa-copy"></i>
-                </button>
-            </div>
+            .action-button {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                padding: 16px 20px;
+                border: none;
+                border-radius: 10px;
+                color: white;
+                font-size: 1.1em;
+                font-weight: bold;
+                text-decoration: none;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+                font-family: 'Cairo', sans-serif;
+                flex-grow: 1;
+            }
 
-            <div class="button-group">
-                <a onclick="alert('Ce bouton est temporairement inactif. Revenez plus tard !')" class="action-button inactive-button">
-                    <i class="fas fa-calculator"></i> صياغة عرض سعر
-                </a>
-                <button class="copy-button inactive-copy-button" onclick="alert('Ce bouton est temporairement inactif. Revenez plus tard !')">
-                    <i class="fas fa-copy"></i>
-                </button>
+            .action-button:hover {
+                transform: translateY(-2px);
+            }
+
+            .action-button:active {
+                transform: translateY(0);
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            }
+
+            .copy-button {
+                background-color: #BDC3C7;
+                color: white;
+                border: none;
+                border-radius: 10px;
+                padding: 16px;
+                cursor: pointer;
+                font-size: 1em;
+                transition: background-color 0.3s ease, transform 0.2s ease;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 45px;
+                height: 45px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+            }
+
+            .copy-button:hover {
+                background-color: #AAB7B8;
+                transform: translateY(-1px);
+            }
+
+            .copy-button:active {
+                transform: translateY(0);
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+            }
+
+            .form-vendeur { background-color: #2ecc71; }
+            .form-vendeur:hover { background-color: #27ae60; }
+
+            .form-acheteur { background-color: #e67e22; }
+            .form-acheteur:hover { background-color: #d35400; }
+
+            .depot-certificat { background-color: #9b59b6; }
+            .depot-certificat:hover { background-color: #8e44ad; }
+
+            .generer-acte { background-color: #f39c12; }
+            .generer-acte:hover { background-color: #e67e22; }
+
+            .correction-info { background-color: #3498db; }
+            .correction-info:hover { background-color: #2980b9; }
+
+            /* Styles for inactive (placeholder) button */
+            .inactive-button {
+                background-color: #cccccc !important; /* Force gray */
+                cursor: not-allowed !important;
+                color: #666666 !important; /* Lighter text color */
+            }
+
+            .inactive-button:hover {
+                background-color: #cccccc !important; /* Keep gray on hover */
+                transform: none !important; /* No transform on hover */
+            }
+
+            /* Also make the copy button next to it inactive */
+            .inactive-copy-button {
+                background-color: #e0e0e0 !important;
+                cursor: not-allowed !important;
+                color: #999999 !important;
+            }
+
+            .inactive-copy-button:hover {
+                background-color: #e0e0e0 !important;
+                transform: none !important;
+            }
+
+            .logout-button {
+                position: absolute;
+                top: 20px;
+                left: 20px; /* Conserve left pour être en haut à droite en RTL */
+                padding: 8px 15px;
+                border: none;
+                border-radius: 8px;
+                background-color: #e74c3c;
+                color: white;
+                font-size: 0.85em;
+                cursor: pointer;
+                transition: background-color 0.3s ease, transform 0.2s ease;
+                font-family: 'Cairo', sans-serif;
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                z-index: 1000;
+            }
+
+            .logout-button:hover {
+                background-color: #c0392b;
+                transform: translateY(-1px);
+            }
+
+            #content-frame {
+                width: 100%;
+                min-height: 150vh;
+                height: auto;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+                display: none;
+                margin-top: 20px;
+            }
+
+            #app-content {
+                display: none;
+            }
+
+            #login-screen {
+                display: none; /* Rendu visible par showLoginScreen() */
+            }
+            
+            .toggle-auth-form {
+                margin-top: 15px;
+                font-size: 0.9em;
+            }
+            .toggle-auth-form a {
+                color: #3498db;
+                text-decoration: none;
+                cursor: pointer;
+            }
+            .toggle-auth-form a:hover {
+                text-decoration: underline;
+            }
+
+            #user-email-display {
+                font-weight: bold;
+                color: #34495e;
+                margin-bottom: 10px;
+            }
+
+            /* Custom Modal Styles */
+            .modal-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.6);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 2000;
+                visibility: hidden;
+                opacity: 0;
+                transition: opacity 0.3s ease, visibility 0.3s ease;
+            }
+
+            .modal-overlay.show {
+                visibility: visible;
+                opacity: 1;
+            }
+
+            .modal-content {
+                background-color: #ffffff;
+                padding: 30px;
+                border-radius: 12px;
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+                text-align: center;
+                max-width: 400px;
+                width: 90%;
+                transform: translateY(-20px);
+                transition: transform 0.3s ease;
+                position: relative;
+            }
+
+            .modal-overlay.show .modal-content {
+                transform: translateY(0);
+            }
+
+            .modal-content h3 {
+                margin-top: 0;
+                color: #34495e;
+                font-size: 1.5em;
+                margin-bottom: 15px;
+            }
+
+            .modal-content p {
+                color: #555;
+                margin-bottom: 25px;
+                line-height: 1.6;
+            }
+
+            .modal-content button {
+                background-color: #3498db;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 8px;
+                cursor: pointer;
+                font-size: 1em;
+                transition: background-color 0.3s ease;
+            }
+
+            .modal-content button:hover {
+                background-color: #2980b9;
+            }
+
+            .modal-close-button {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                background: none;
+                border: none;
+                font-size: 1.5em;
+                color: #aaa;
+                cursor: pointer;
+                padding: 5px;
+            }
+
+            .modal-close-button:hover {
+                color: #777;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Custom Modal for Alerts -->
+        <div id="custom-modal-overlay" class="modal-overlay">
+            <div class="modal-content">
+                <button class="modal-close-button" onclick="window.hideMessageModal()">&times;</button>
+                <h3 id="modal-title"></h3>
+                <p id="modal-message"></p>
+                <button onclick="window.hideMessageModal()">حسناً</button>
             </div>
         </div>
 
-        <iframe id="content-frame" src="" frameborder="0" allowfullscreen></iframe>
+        <div class="container" id="login-screen">
+            <h1>تسجيل الدخول</h1>
+            <div class="auth-form">
+                <input type="email" id="login-email" placeholder="البريد الإلكتروني" required>
+                <input type="password" id="login-password" placeholder="كلمة المرور" required>
+                <button class="auth-button" onclick="window.login()">دخول</button>
+            </div>
+        </div>
 
-    </div>
+        <div class="container" id="app-content">
+            <button class="logout-button" onclick="window.logout()">
+                <i class="fas fa-sign-out-alt"></i> تسجيل الخروج
+            </button>
 
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+            <h1>بوابة الموثق: إجراءات سريعة</h1>
+            <p id="user-email-display"></p>
+            <div class="button-grid" id="dynamic-buttons">
+                <!-- Buttons will be dynamically loaded here -->
+            </div>
 
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyAIenA86_ZRPT53z3ZJhLFRM5Rk_1YKRyI",
-            authDomain: "assistant-notarial.firebaseapp.com",
-            projectId: "assistant-notarial",
-            storageBucket: "assistant-notarial.firebasestorage.app",
-            messagingSenderId: "796136299126",
-            appId: "1:796136299126:web:c653efd43704edb2ee5d57",
-            measurementId: "G-X6YBHNFWRT"
-        };
+            <iframe id="content-frame" src="" frameborder="0" allowfullscreen></iframe>
+        </div>
 
-        const app = firebase.initializeApp(firebaseConfig);
-        const auth = app.auth();
+        <!-- Firebase SDKs -->
+        <script type="module">
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+            import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, signInWithCustomToken, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+            import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"; // Changed from onSnapshot to getDoc
 
-        const loginScreen = document.getElementById("login-screen");
-        // registerScreen est conservé comme référence mais n'est plus utilisé ni affiché
-        const registerScreen = document.getElementById("register-screen"); 
-        const appContent = document.getElementById("app-content");
-        const loginEmailInput = document.getElementById("login-email");
-        const loginPasswordInput = document.getElementById("login-password");
-        // Les champs d'inscription ne sont plus nécessaires
-        // const registerEmailInput = document.getElementById("register-email");
-        // const registerPasswordInput = document.getElementById("register-password");
-        const contentFrame = document.getElementById("content-frame");
-        const userEmailDisplay = document.getElementById("user-email-display");
+            // Global variables for Firebase config and app ID
+            const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
+                // REMPLACEZ CES VALEURS PAR LES VÔTRES SI VOUS N'ÊTES بAS DANS L'ENVIRONNEMENT CANVAS
+                apiKey: "AIzaSyAIenA86_ZRPT53z3ZJhLFRM5Rk_1YKRyI",
+                authDomain: "assistant-notarial.firebaseapp.com",
+                projectId: "assistant-notarial",
+                storageBucket: "assistant-notarial.firebasestorage.app",
+                messagingSenderId: "796136299126",
+                appId: "1:796136299126:web:c653efd43704edb2ee5d57",
+                measurementId: "G-X6YBHNFWRT"
+            };
+            const appId = firebaseConfig.appId; 
 
-        function showLoginScreen() {
-            loginScreen.style.display = "flex";
-            // Assurez-vous que registerScreen est toujours masqué, même si retiré du DOM
-            if (registerScreen) registerScreen.style.display = "none"; 
-            appContent.style.display = "none";
-            contentFrame.style.display = "none";
-            contentFrame.src = "";
-        }
+            const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
 
-        // Cette fonction n'est plus appelée, mais elle est conservée au cas où
-        function showRegisterScreen() {
-            loginScreen.style.display = "none";
-            if (registerScreen) registerScreen.style.display = "flex";
-            appContent.style.display = "none";
-            contentFrame.style.display = "none";
-            contentFrame.src = "";
-        }
+            // Initialize Firebase
+            let app;
+            let auth;
+            let db;
 
-        function showAppContent(userEmail) {
-            loginScreen.style.display = "none";
-            if (registerScreen) registerScreen.style.display = "none";
-            appContent.style.display = "flex";
-            userEmailDisplay.textContent = `مرحباً بك، ${userEmail} !`;
-        }
-
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                console.log("Utilisateur connecté :", user.email);
-                showAppContent(user.email);
-            } else {
-                console.log("Aucun utilisateur connecté.");
-                showLoginScreen();
-            }
-        });
-
-        function login() {
-            const email = loginEmailInput.value;
-            const password = loginPasswordInput.value;
-
-            auth.signInWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    console.log("Connexion réussie pour :", userCredential.user.email);
-                })
-                .catch((error) => {
-                    alert("خطأ في تسجيل الدخول: " + error.message);
-                    console.error("Erreur de connexion :", error);
-                });
-        }
-
-        // La fonction register() n'est plus appelée ni nécessaire
-        /*
-        function register() {
-            const email = registerEmailInput.value;
-            const password = registerPasswordInput.value;
-
-            auth.createUserWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    alert("تم إنشاء حسابك بنجاح! يمكنك الآن تسجيل الدخول.");
-                    console.log("Compte créé pour :", userCredential.user.email);
-                })
-                .catch((error) => {
-                    alert("خطأ في التسجيل: " + error.message);
-                    console.error("Erreur d'inscription :", error);
-                });
-        }
-        */
-
-        function logout() {
-            auth.signOut()
-                .then(() => {
-                    console.log("Déconnexion réussie.");
-                })
-                .catch((error) => {
-                    console.error("Erreur de déconnexion :", error);
-                    alert("خطأ أثناء تسجيل الخروج: " + error.message);
-                });
-        }
-
-        function loadIntoIframeAndScroll(url) {
-            contentFrame.src = url;
-            contentFrame.style.display = "block";
-            contentFrame.scrollIntoView({ behavior: "smooth", block: "start" }); 
-        }
-
-        async function copyLinkToClipboard(link, buttonElement) {
             try {
-                await navigator.clipboard.writeText(link);
-                const originalContent = buttonElement.innerHTML;
-                const originalBgColor = buttonElement.style.backgroundColor;
-                
-                buttonElement.innerHTML = '<i class="fas fa-check"></i>';
-                buttonElement.style.backgroundColor = '#28a745';
-
-                setTimeout(() => {
-                    buttonElement.innerHTML = originalContent;
-                    buttonElement.style.backgroundColor = originalBgColor;
-                }, 2000);
-                
-            } catch (err) {
-                console.error('Erreur lors de la copie du lien : ', err);
-                alert('فشل نسخ الرابط. يرجى النسخ يدوياً: ' + link);
-            }
-        }
-
-        async function triggerN8nWorkflow() {
-            const n8nWebhookUrl = "https://n8n.srv903088.hstgr.cloud/webhook/a5d6f7a8-b9c0-d1e2-f3g4-h5i6j7k8l9m0";
-            
-            const user = auth.currentUser;
-            if (!user) {
-                alert("يجب عليك تسجيل الدخول لتشغيل سير عمل n8n.");
-                return;
+                app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+                console.log("Firebase initialized successfully.");
+            } catch (e) {
+                console.error("Error initializing Firebase:", e);
+                window.showMessageModal("خطأ في التهيئة", "فشل في تهيئة Firebase. يرجى التحقق من مفاتيح API.");
             }
             
-            try {
-                const idToken = await user.getIdToken();
+            let currentUserId = null; // To store the current user's UID
 
-                const response = await fetch(n8nWebhookUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${idToken}`
-                    },
-                    body: JSON.stringify({
-                        message: "بيانات تم إرسالها من الصفحة المؤمنة",
-                        userEmail: user.email,
-                        firebaseIdToken: idToken
-                    }),
-                });
+            // DOM Elements
+            const loginScreen = document.getElementById("login-screen");
+            const appContent = document.getElementById("app-content");
+            const loginEmailInput = document.getElementById("login-email");
+            const loginPasswordInput = document.getElementById("login-password");
+            const contentFrame = document.getElementById("content-frame");
+            const userEmailDisplay = document.getElementById("user-email-display");
+            const dynamicButtonsContainer = document.getElementById("dynamic-buttons");
 
-                if (response.ok) {
-                    const data = await response.json();
-                    alert("تم تشغيل سير عمل n8n بنجاح!");
-                    console.log('Succès n8n:', data);
+            // Custom Modal Elements
+            const customModalOverlay = document.getElementById('custom-modal-overlay');
+            const modalTitle = document.getElementById('modal-title');
+            const modalMessage = document.getElementById('modal-message');
+
+            // Function to show custom modal - Exposed to global scope
+            window.showMessageModal = function(title, message) {
+                modalTitle.textContent = title;
+                modalMessage.textContent = message;
+                customModalOverlay.classList.add('show');
+            }
+
+            // Function to hide custom modal - Exposed to global scope
+            window.hideMessageModal = function() {
+                customModalOverlay.classList.remove('show');
+            }
+
+            // Function to display login screen
+            function showLoginScreen() {
+                loginScreen.style.display = "flex";
+                appContent.style.display = "none";
+                contentFrame.style.display = "none";
+                contentFrame.src = "";
+                currentUserId = null; // Clear user ID on logout
+            }
+
+            // Function to display app content
+            function showAppContent(userEmail) {
+                loginScreen.style.display = "none";
+                appContent.style.display = "flex";
+                userEmailDisplay.textContent = `مرحباً بك، ${userEmail} !`;
+            }
+
+            // Firebase Auth State Listener
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    console.log("Utilisateur connecté :", user.email, "UID:", user.uid);
+                    currentUserId = user.uid;
+                    showAppContent(user.email);
+                    // Load links specific to this user
+                    await loadNotaryLinks(currentUserId);
                 } else {
-                    alert(`خطأ في تشغيل سير عمل n8n: ${response.status} - ${response.statusText}`);
-                    console.error('Erreur n8n:', response.status, response.statusText);
+                    console.log("Aucun utilisateur connecté.");
+                    showLoginScreen();
                 }
-            } catch (error) {
-                alert(`خطأ أثناء الاتصال بـ n8n: ${error.message}`);
-                console.error('Erreur lors de l\'appel n8n:', error);
+            });
+
+            // Initial authentication with custom token if available, otherwise anonymously
+            window.authenticateUser = async function() { // Expose to global scope
+                try {
+                    // Only attempt anonymous sign-in if no user is currently logged in
+                    if (!auth.currentUser) {
+                        if (initialAuthToken) {
+                            await signInWithCustomToken(auth, initialAuthToken);
+                            console.log("Signed in with custom token.");
+                        } else {
+                            // Removed signInAnonymously to prevent auth/admin-restricted-operation if not needed/enabled
+                            console.log("No initial token or current user. Waiting for explicit login.");
+                        }
+                    } else {
+                        console.log("User already logged in, skipping initial sign-in attempts.");
+                    }
+                } catch (error) {
+                    console.error("Authentication error during initial check:", error);
+                    window.showMessageModal("خطأ في المصادقة", `فشل تسجيل الدخول الأولي: ${error.message}`);
+                }
             }
-        }
-    </script>
-</body>
-</html>
+
+            // Call authentication on page load
+            window.authenticateUser(); // Call through window object
+
+            // Login function - Exposed to global scope
+            window.login = async function() {
+                const email = loginEmailInput.value;
+                const password = loginPasswordInput.value;
+
+                try {
+                    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                    console.log("Connexion réussie pour :", userCredential.user.email);
+                    // onAuthStateChanged will handle showing app content and loading links
+                } catch (error) {
+                    window.showMessageModal("خطأ في تسجيل الدخول", "خطأ في تسجيل الدخول: " + error.message);
+                    console.error("Erreur de connexion :", error);
+                }
+            }
+
+            // Logout function - Exposed to global scope
+            window.logout = async function() {
+                try {
+                    await signOut(auth);
+                    console.log("Déconnexion réussie.");
+                    // onAuthStateChanged will handle showing login screen
+                } catch (error) {
+                    console.error("Erreur de déconnexion :", error);
+                    window.showMessageModal("خطأ أثناء تسجيل الخروج", "خطأ أثناء تسجيل الخروج: " + error.message);
+                }
+            }
+
+            // Function to load links into the iframe and scroll
+            function loadIntoIframeAndScroll(url) {
+                if (url && url !== 'inactive') { // Only load if URL is valid
+                    contentFrame.src = url;
+                    contentFrame.style.display = "block";
+                    contentFrame.scrollIntoView({ behavior: "smooth", block: "start" });
+                } else {
+                    window.showMessageModal("رابط غير متاح", "هذا الرابط غير متاح حاليًا أو لم يتم إعداده بعد.");
+                }
+            }
+
+            // Function to copy link to clipboard
+            async function copyLinkToClipboard(link, buttonElement) {
+                if (link === 'inactive') {
+                    window.showMessageModal("رابط غير متاح", "هذا الرابط غير متاح حاليًا للنسخ.");
+                    return;
+                }
+                try {
+                    // Using document.execCommand('copy') for better iframe compatibility
+                    const textarea = document.createElement('textarea');
+                    textarea.value = link;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+
+                    const originalContent = buttonElement.innerHTML;
+                    const originalBgColor = buttonElement.style.backgroundColor;
+                    
+                    buttonElement.innerHTML = '<i class="fas fa-check"></i>';
+                    buttonElement.style.backgroundColor = '#28a745';
+
+                    setTimeout(() => {
+                        buttonElement.innerHTML = originalContent;
+                        buttonElement.style.backgroundColor = originalBgColor;
+                    }, 2000);
+                    
+                    window.showMessageModal("تم النسخ", "تم نسخ الرابط إلى الحافظة بنجاح!");
+                } catch (err) {
+                    console.error('Erreur lors de la copie du lien : ', err);
+                    window.showMessageModal("فشل النسخ", 'فشل نسخ الرابط. يرجى النسخ يدوياً: ' + link);
+                }
+            }
+
+            // Function to render buttons based on fetched links
+            function renderButtons(links) {
+                console.log("Links received by renderButtons:", links); // Ajoutez cette ligne
+                dynamicButtonsContainer.innerHTML = ''; // Clear existing buttons
+
+                const buttonDefinitions = [
+                    { id: 'formVendeur', icon: 'fas fa-user-tag', text: 'نموذج البائع', colorClass: 'form-vendeur' },
+                    { id: 'formAcheteur', icon: 'fas fa-shopping-bag', text: 'نموذج المشتري', colorClass: 'form-acheteur' },
+                    { id: 'depotCertificat', icon: 'fas fa-scroll', text: 'إيداع شهادة الملكية', colorClass: 'depot-certificat' },
+                    { id: 'genererActe', icon: 'fas fa-file-signature', text: 'إنشاء نموذج العقد', colorClass: 'generer-acte' },
+                    { id: 'correctionInfo', icon: 'fas fa-edit', text: 'تصحيح المعلومات', colorClass: 'correction-info' },
+                    { id: 'offrePrix', icon: 'fas fa-calculator', text: 'صياغة عرض سعر', colorClass: 'inactive-button', copyClass: 'inactive-copy-button' } // Default inactive
+                ];
+
+                buttonDefinitions.forEach(def => {
+                    const link = links[def.id] || 'inactive'; // Get link from fetched data, default to 'inactive'
+                    const isInactive = link === 'inactive';
+
+                    const buttonGroup = document.createElement('div');
+                    buttonGroup.className = 'button-group';
+
+                    const actionButton = document.createElement('a');
+                    actionButton.className = `action-button ${def.colorClass} ${isInactive ? 'inactive-button' : ''}`;
+                    actionButton.innerHTML = `<i class="${def.icon}"></i> ${def.text}`;
+                    actionButton.onclick = isInactive ? () => window.showMessageModal("رابط غير متاح", "هذا الرابط غير متاح حاليًا أو لم يتم إعداده بعد.") : () => loadIntoIframeAndScroll(link);
+                    if (!isInactive && (def.id === 'depotCertificat' || def.id === 'genererActe')) { // Open in new tab for Drive/n8n form if not iframe friendly
+                        actionButton.href = link;
+                        actionButton.target = "_blank";
+                        actionButton.onclick = null; // Disable iframe loading for these
+                    }
+
+                    const copyButton = document.createElement('button');
+                    copyButton.className = `copy-button ${def.copyClass || ''} ${isInactive ? 'inactive-copy-button' : ''}`;
+                    copyButton.innerHTML = `<i class="fas fa-copy"></i>`;
+                    copyButton.onclick = isInactive ? () => window.showMessageModal("رابط غير متاح", "هذا الرابط غير mتاح حاليًا للنس نسخ.") : (event) => copyLinkToClipboard(link, event.currentTarget);
+
+                    buttonGroup.appendChild(actionButton);
+                    buttonGroup.appendChild(copyButton);
+                    dynamicButtonsContainer.appendChild(buttonGroup);
+                });
+            }
+
+            // Function to load notary-specific links from Firestore
+            async function loadNotaryLinks(userId) {
+                if (!userId) {
+                    console.warn("No user ID available to load links.");
+                    renderButtons({}); // Render with all inactive buttons
+                    return;
+                }
+
+                const docRef = doc(db, `artifacts/${appId}/users/${userId}/notary_links`, 'user_links');
+                console.log("Attempting to load notary links for UID:", userId, "from path:", docRef.path); // Debug log
+
+                try {
+                    const docSnap = await getDoc(docRef); 
+
+                    if (docSnap.exists()) {
+                        const links = docSnap.data();
+                        console.log("Liens du notaire chargés (getDoc) :", links);
+                        renderButtons(links);
+                    } else {
+                        console.log("Aucun lien trouvé pour ce notaire (getDoc). Affichage des liens par défaut/inactifs.");
+                        renderButtons({}); // Render with all inactive buttons
+                    }
+                } catch (error) {
+                    console.error("Erreur lors du chargement des liens du notaire (getDoc) :", error);
+                    window.showMessageModal("خطأ في تحميل البيانات", `فشل تحميل روابطك: ${error.message}`);
+                    renderButtons({}); // Render with all inactive buttons on error
+                }
+            }
+
+            // Initial rendering of buttons (will be updated by onAuthStateChanged)
+            renderButtons({}); // Render with default inactive state initially
+        </script>
+    </body>
+    </html>
+    
