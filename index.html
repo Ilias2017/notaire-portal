@@ -157,7 +157,7 @@
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
         }
 
-        .copy-button {
+        .open-button { /* New class for the small "open" button */
             background-color: #BDC3C7;
             color: white;
             border: none;
@@ -174,12 +174,12 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
         }
 
-        .copy-button:hover {
+        .open-button:hover {
             background-color: #AAB7B8;
             transform: translateY(-1px);
         }
 
-        .copy-button:active {
+        .open-button:active {
             transform: translateY(0);
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
         }
@@ -211,14 +211,14 @@
             transform: none !important; /* No transform on hover */
         }
 
-        /* Also make the copy button next to it inactive */
-        .inactive-copy-button {
+        /* Also make the open button next to it inactive */
+        .inactive-open-button {
             background-color: #e0e0e0 !important;
             cursor: not-allowed !important;
             color: #999999 !important;
         }
 
-        .inactive-copy-button:hover {
+        .inactive-open-button:hover {
             background-color: #e0e0e0 !important;
             transform: none !important;
         }
@@ -293,17 +293,15 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.6);
-            display: flex;
+            display: none; /* Changed from visibility: hidden; opacity: 0; to display: none; */
             justify-content: center;
             align-items: center;
             z-index: 2000;
-            visibility: hidden;
-            opacity: 0;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
+            transition: opacity 0.3s ease; /* Keep transition for opacity */
         }
 
         .modal-overlay.show {
-            visibility: visible;
+            display: flex; /* Changed to display: flex; when shown */
             opacity: 1;
         }
 
@@ -412,7 +410,7 @@
     <!-- Firebase SDKs -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, signInWithCustomToken, updatePassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"; // Added sendPasswordResetEmail
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, signInWithCustomToken, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"; // Added setPersistence, browserLocalPersistence
         import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"; 
 
         // Global variables for Firebase config and app ID
@@ -428,6 +426,7 @@
         };
         const appId = firebaseConfig.appId; 
 
+        // FIX: Removed JSON.parse() as __initial_auth_token is already a string (JWT)
         const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
 
         // Initialize Firebase
@@ -508,11 +507,12 @@
             try {
                 // Only attempt sign-in if no user is currently logged in
                 if (!auth.currentUser) {
+                    // Set persistence BEFORE signing in
+                    await setPersistence(auth, browserLocalPersistence); 
                     if (initialAuthToken) {
                         await signInWithCustomToken(auth, initialAuthToken);
-                        console.log("Signed in with custom token.");
+                        console.log("Signed in with custom token with local persistence.");
                     } else {
-                        // Removed signInAnonymously to prevent auth/admin-restricted-operation if not needed/enabled
                         console.log("No initial token or current user. Waiting for explicit login.");
                     }
                 } else {
@@ -533,6 +533,8 @@
             const password = loginPasswordInput.value;
 
             try {
+                // Set persistence BEFORE signing in
+                await setPersistence(auth, browserLocalPersistence); 
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 console.log("Connexion réussie pour :", userCredential.user.email);
                 // onAuthStateChanged will handle showing app content and loading links
@@ -574,39 +576,6 @@
             }
         }
 
-        // Function to copy link to clipboard
-        async function copyLinkToClipboard(link, buttonElement) {
-            if (link === 'inactive') {
-                window.showMessageModal("رابط غير متاح", "هذا الرابط غير متاح حاليًا للنسخ.");
-                return;
-            }
-            try {
-                // Using document.execCommand('copy') for better iframe compatibility
-                const textarea = document.createElement('textarea');
-                textarea.value = link;
-                document.body.appendChild(textarea);
-                textarea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textarea);
-
-                const originalContent = buttonElement.innerHTML;
-                const originalBgColor = buttonElement.style.backgroundColor;
-                
-                buttonElement.innerHTML = '<i class="fas fa-check"></i>';
-                buttonElement.style.backgroundColor = '#28a745';
-
-                setTimeout(() => {
-                    buttonElement.innerHTML = originalContent;
-                    buttonElement.style.backgroundColor = originalBgColor;
-                }, 2000);
-                
-                window.showMessageModal("تم النسخ", "تم نسخ الرابط إلى الحافظة بنجاح!");
-            } catch (err) {
-                console.error('Erreur lors de la copie du lien : ', err);
-                window.showMessageModal("فشل النسخ", 'فشل نسخ الرابط. يرجى النسخ يدوياً: ' + link);
-            }
-        }
-
         // Function to render buttons based on fetched links
         function renderButtons(links) {
             console.log("Links received by renderButtons:", links); // Debug log
@@ -618,39 +587,39 @@
                 { id: 'depotCertificat', icon: 'fas fa-scroll', text: 'إيداع شهادة الملكية', colorClass: 'depot-certificat' },
                 { id: 'genererActe', icon: 'fas fa-file-signature', text: 'إنشاء نموذج العقد', colorClass: 'generer-acte' },
                 { id: 'correctionInfo', icon: 'fas fa-edit', text: 'تصحيح المعلومات', colorClass: 'correction-info' },
-                { id: 'offrePrix', icon: 'fas fa-calculator', text: 'صياغة عرض سعر', colorClass: 'inactive-button', copyClass: 'inactive-copy-button' } // Default inactive
+                { id: 'offrePrix', icon: 'fas fa-calculator', text: 'صياغة عرض سعر', colorClass: 'inactive-button' } // Default inactive
             ];
 
             buttonDefinitions.forEach(def => {
-                const link = links[def.id] || 'inactive'; // Get link from fetched data, default to 'inactive'
-                const isInactive = link === 'inactive';
+                const mainLink = links[def.id] || 'inactive'; // Link for the main button (iframe)
+                const openLink = links[`${def.id}Open`] || 'inactive'; // Link for the new "open" button (new tab)
+                
+                const isMainLinkInactive = mainLink === 'inactive';
+                const isOpenLinkInactive = openLink === 'inactive';
 
                 const buttonGroup = document.createElement('div');
                 buttonGroup.className = 'button-group';
 
                 const actionButton = document.createElement('a');
-                actionButton.className = `action-button ${def.colorClass} ${isInactive ? 'inactive-button' : ''}`;
+                actionButton.className = `action-button ${def.colorClass} ${isMainLinkInactive ? 'inactive-button' : ''}`;
                 actionButton.innerHTML = `<i class="${def.icon}"></i> ${def.text}`;
-                actionButton.onclick = isInactive ? () => window.showMessageModal("رابط غير متاح", "هذا الرابط غير متاح حاليًا أو لم يتم إعداده بعد.") : () => loadIntoIframeAndScroll(link);
                 
-                // MODIFICATION ICI: Pour permettre l'intégration de n8n dans l'iframe
-                // Supprimé la condition target="_blank" pour genererActe
-                // Si le lien est pour DepotCertificat (Google Drive), il s'ouvre toujours dans un nouvel onglet
-                if (!isInactive && def.id === 'depotCertificat') { 
-                    actionButton.href = link;
-                    actionButton.target = "_blank";
-                    actionButton.onclick = null; // Disable iframe loading for this specific link
-                } else if (!isInactive) { // For all other active links, try to load in iframe
+                // All main buttons now attempt to load in iframe
+                if (isMainLinkInactive) {
+                    actionButton.onclick = () => window.showMessageModal("رابط غير متاح", "هذا الرابط غير متاح حاليًا أو لم يتم إعداده بعد.");
+                    actionButton.href = "#"; // Ensure no navigation
+                } else {
                     actionButton.href = "#"; // Prevent default navigation for iframe links
+                    actionButton.onclick = () => loadIntoIframeAndScroll(mainLink);
                 }
 
-                const copyButton = document.createElement('button');
-                copyButton.className = `copy-button ${def.copyClass || ''} ${isInactive ? 'inactive-copy-button' : ''}`;
-                copyButton.innerHTML = `<i class="fas fa-copy"></i>`;
-                copyButton.onclick = isInactive ? () => window.showMessageModal("رابط غير متاح", "هذا الرابط غير mتاح حاليًا للنس نسخ.") : (event) => copyLinkToClipboard(link, event.currentTarget);
+                const openButton = document.createElement('button');
+                openButton.className = `open-button ${isOpenLinkInactive ? 'inactive-open-button' : ''}`;
+                openButton.innerHTML = `<i class="fas fa-external-link-alt"></i>`; // External link icon
+                openButton.onclick = isOpenLinkInactive ? () => window.showMessageModal("رابط غير متاح", "هذا الرابط غير متاح حاليًا للفتح.") : () => window.open(openLink, '_blank'); // Always open in new tab
 
                 buttonGroup.appendChild(actionButton);
-                buttonGroup.appendChild(copyButton);
+                buttonGroup.appendChild(openButton);
                 dynamicButtonsContainer.appendChild(buttonGroup);
             });
         }
